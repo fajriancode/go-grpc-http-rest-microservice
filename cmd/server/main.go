@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fajriancode/go-grpc-http-rest-microservice/pkg/cmd"
+	cmd "github.com/fajriancode/go-grpc-http-rest-microservice/pkg/cmd/server"
 )
 
 func main() {
