@@ -1,0 +1,106 @@
+syntax = "proto3";
+package v1;
+
+option go_package = "./";
+
+import "google/protobuf/timestamp.proto";
+
+message ToDo {
+    // Unique integer identifier of the todo task
+    int64 id = 1;
+    // Title of the task
+    string title = 2;
+    // Detail description of the todo task
+    string description = 3;
+    // Date and time to remind the todo task
+    google.protobuf.Timestamp reminder = 4;
+}
+
+message CreateRequest {
+    // API versioning: it is best practice to specify version explicity
+    string api = 1;
+    // Task entity to add
+    ToDo toDo = 2;
+}
+
+message CreateResponse {
+    // API versioning: it is best practice to specify version explicity
+    string api = 1;
+    // ID of created task
+    int64 id = 2;
+}
+
+// Request data to read todo task
+message ReadRequest {
+    string api = 1;
+    // Unique integer identifier of the todo task
+    int64 id = 2;
+}
+
+// Contains todo task data specified in by ID request
+message ReadResponse{
+    string api = 1;
+    // Task entity read by ID
+    ToDo toDo = 2;
+}
+
+// Request data to update todo task
+message UpdateRequest {
+    string api = 1;
+    // Task entity to update
+    ToDo toDo = 2;
+}
+
+// Contains status of update operation 
+message UpdateResponse {
+    string api = 1;
+
+    // Contains number of entities have been updated
+    // Equals 1 in case of succesfully update
+    int64 updated = 2;
+}
+
+// Request data to delete todo task
+message DeleteRequest {
+    string api = 1;
+    // Unique integer identifier of the todo task to delete
+    int64 id = 2;
+}
+
+// Contains status of delete operation
+message DeleteResponse {
+    string api = 1;
+
+    // Contains number of entities have been deleted
+    // Equals 1 in case of succesfully delete
+    int64 deleted = 2;
+}
+
+message ReadAllRequest {
+    string api = 1;
+}
+
+// Contains list of all todo task
+message ReadAllResponse {
+    string api = 1;
+    // List of all todo tasks
+    repeated ToDo toDos = 2;
+}
+
+// Service to manage list of todo tasks
+service ToDoService {
+    // Create new todo task
+    rpc Create (CreateRequest) returns (CreateResponse);
+
+    // Read todo task
+    rpc Read (ReadRequest) returns (ReadResponse);
+
+    // Update todo task
+    rpc Update (UpdateRequest) returns (UpdateResponse);
+
+    // Delete todo task
+    rpc Delete (DeleteRequest) returns (DeleteResponse);
+
+    // Read all todo tasks
+    rpc ReadAll (ReadAllRequest) returns (ReadAllResponse);
+}
